@@ -7,12 +7,6 @@
 source("Most_Highly_Expressed_Genes.R") # To get AllSputum_RankExpression
 # Using rank expression here, NOT TPM!
 
-my_annotation_colors <- list(
-  Week = c("0" = "#0072B2",  # Blue
-           "2" = "#E66900",  # Orange
-           "Broth" = "#999999")  # Grey
-)
-
 
 ###########################################################
 ###################### PROCESS DATA #######################
