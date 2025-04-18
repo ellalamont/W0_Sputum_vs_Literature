@@ -20,6 +20,7 @@ library(ggplotify) # To convert pheatmaps to ggplots
 library(corrplot)
 library(ggcorrplot)
 library(ggfortify) # To make pca plots with plotly
+library(ggVennDiagram) # To make venn diagrams
 
 # if (!require("BiocManager", quietly = TRUE))
 #   install.packages("BiocManager")
@@ -90,7 +91,7 @@ rownames(All_tpm) <- All_tpm[,1] # add the rownames
 # Uncaptured Ra broth samples
 # "H37Ra_Broth_4", "H37Ra_Broth_5", "H37Ra_Broth_6"
 
-# my_sample_names <- c("S_250754", "S_355466", "S_503557", "S_503937", "S_575533_MtbrRNA", "S_577208", "H37Ra_Broth_4", "H37Ra_Broth_5", "H37Ra_Broth_6")
+my_sample_names <- c("S_250754", "S_355466", "S_503557", "S_503937", "S_575533_MtbrRNA", "S_577208", "H37Ra_Broth_4", "H37Ra_Broth_5", "H37Ra_Broth_6")
 # W0vsBroth_sample_names <- c("S_250754", "S_355466", "S_503557", "H37Ra_Broth_4", "H37Ra_Broth_5", "H37Ra_Broth_6")
 W0_Sputum_SampleNames <- c("S_250754", "S_355466", "S_503557")
 
@@ -164,8 +165,42 @@ my_pipeSummary$Week <- as.factor(my_pipeSummary$Week)  # Convert back if needed
 my_pipeSummary["Week"]
 
 
+###########################################################
+###################### LOAD GENE SETS #####################
 
+# Get list of all .rda files in the folder
+rda_files <- list.files("GeneSet_Data", pattern = "\\.rda$", full.names = TRUE)
 
+# Loop through each file and load it with a name based on the filename
+for (file in rda_files) {
+  file_name <- tools::file_path_sans_ext(basename(file))  # Extract filename without extension
+  env <- new.env()  # Create a temporary environment to load the object
+  load(file, envir = env)  # Load .rda file into this environment
+  
+  # Assign the loaded object to a new variable named after the file
+  assign(file_name, env$allGeneSets)  
+}
+# Clean up
+rm(env)  # Remove the temporary environment
+
+# To put them in a list of lists
+rda_files <- list.files("GeneSet_Data", pattern = "\\.rda$", full.names = TRUE)
+allGeneSetList <- list()
+for(file in rda_files) {
+  file_name <- tools::file_path_sans_ext(basename(file))
+  env <- new.env()
+  load(file, envir = env)  # loads allGeneSets into env
+  allGeneSetList[[file_name]] <- env$allGeneSets  # store it in our list
+  rm(env)
+}
+
+# Now update the names for each gene set in the list of lists:
+allGeneSetList <- lapply(allGeneSetList, function(gset) {
+  if (!is.null(gset)) {
+    names(gset) <- gsub("<.*", "", names(gset))
+  }
+  return(gset)
+})
 
 
 
