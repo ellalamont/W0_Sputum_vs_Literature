@@ -15,7 +15,7 @@ source("Most_Highly_Expressed_Genes.R") # To get AllSputum_RankExpression
 AllSputum_RankExpression_2 <- AllSputum_RankExpression %>%
   column_to_rownames(var = "Gene")
 
-# Just take the top 50 genes to make things easier when figuring it out
+# Just take the top 20 genes to make things easier when figuring it out
 AllSputum_RankExpression_filtered20 <- AllSputum_RankExpression_2 %>%
   slice_head(n = 20)
 
