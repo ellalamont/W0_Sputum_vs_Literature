@@ -204,6 +204,34 @@ allGeneSetList <- lapply(allGeneSetList, function(gset) {
 
 
 
+###########################################################
+######### IMPORT AND PROCESS ALL READS_M VALUES ###########
+# I **THINK** READS_M is the raw reads, Mark says it is 
+# Only need ProbeTest4 and ProbeTest5 for the sputum samples I am interested in
+
+ProbeTest5_RawReads <- read.csv("EllaData/ProbeTest5_Mtb.Expression.Gene.Data.ReadsM_moreTrim.csv") # This has the 3' end trimmed 40bp to increase the number of reads aligning
+ProbeTest4_RawReads <- read.csv("EllaData/Probetest4_Mtb.Expression.Gene.Data.ReadsM.csv")
+
+# Need to remove the undetermined which all share names
+ProbeTest5_RawReads$Undetermined_S0 <- NULL
+ProbeTest4_RawReads$Undetermined_S0 <- NULL
+
+# Merge the 3 documents
+All_RawReads <- merge(ProbeTest5_RawReads, ProbeTest4_RawReads, all = T)
+
+# Adjust the names so they are slightly shorter
+names(All_RawReads) <- gsub(x = names(All_RawReads), pattern = "_S.*", replacement = "") # This regular expression removes the _S and everything after it (I think...)
+
+rownames(All_RawReads) <- All_RawReads[,1] # add the rownames
+
+
+###########################################################
+################# SUBSET RAW READ VALUES ##################
+# Just grab the sputum and broth samples that I want
+
+# W0_Sputum_SampleNames <- c("S_250754", "S_355466", "S_503557")
+
+my_RawReads_W0Sputum <- All_RawReads %>% select(all_of(W0_Sputum_SampleNames))
 
 
 

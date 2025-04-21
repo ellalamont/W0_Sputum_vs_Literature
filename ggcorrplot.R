@@ -179,4 +179,48 @@ ggcorrplot_Pearson <- corr %>%
        fill = "Correlation")
 ggcorrplot_Pearson
 
+###########################################################
+###### TOP 15% SPEARMAN GGCORRPLOT WITH P-VALUES ##########
+
+# Just use the top 15% expressed genes (instead of all the genes)
+# top15_AllSputum_RankExpression_W0RawReads
+
+# Need to make the gene names the rownames! 
+top15_AllSputum_RankExpression_W0RawReads_2 <- top15_AllSputum_RankExpression_W0RawReads %>%
+  column_to_rownames(var = "Gene")
+
+
+# Do this a slightly different way for adding to ggcorrplot - THIS WAY IS CLEANER!!!!
+n <- ncol(top15_AllSputum_RankExpression_W0RawReads_2)
+corr <- matrix(NA, n, n)
+p.mat <- matrix(NA, n, n)
+colnames(corr) <- colnames(p.mat) <- colnames(top15_AllSputum_RankExpression_W0RawReads_2)
+rownames(corr) <- rownames(p.mat) <- colnames(top15_AllSputum_RankExpression_W0RawReads_2)
+for (i in 1:n) {
+  for (j in 1:n) {
+    test <- cor.test(top15_AllSputum_RankExpression_W0RawReads_2[[i]], top15_AllSputum_RankExpression_W0RawReads_2[[j]], method = "spearman",  use = "pairwise.complete.obs")
+    corr[i, j] <- test$estimate
+    p.mat[i, j] <- test$p.value
+  }
+}
+
+ggcorrplot_Spearman_top15 <- corr %>% 
+  ggcorrplot(hc.order = F, 
+             p.mat = p.mat,
+             insig = "pch", 
+             sig.level = 0.05,
+             lab = TRUE, lab_size = 4,
+             type = c("lower"),
+             outline.col = "white") + 
+  # scale_fill_gradient2(limit = c(-0.03,1), low = "blue", high =  "red", mid = "white", midpoint = (((1-(-0.03))/2)+(-0.03))) + # Make sure to change based on the min!
+  my_plot_themes + 
+  scale_x_discrete(guide = guide_axis(angle = 45)) + 
+  labs(title = "Spearman Correlation Literature sputum; Top 15% expressed genes", 
+       subtitle = "X's mean not significant", 
+       fill = "Correlation")
+ggcorrplot_Spearman_top15
+
+
+
+
 

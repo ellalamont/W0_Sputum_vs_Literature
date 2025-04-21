@@ -62,7 +62,27 @@ RANK_Average_tpm_W0Sputum <- test_2 %>%
   select(RANK_Average)
 
 
+#########################################################
+####### DO THIS ALL WITH THE W0 SPUTUM RAW READS ########
+# my_RawReads_W0Sputum
 
+W0Sputum_RawReads_QuantileNormalization <- as.data.frame(quantile_normalisation(my_RawReads_W0Sputum))
+
+# ChatGPT made this to change the Quantile Normalization to a 0-100 scale
+rank_cols_to_percentile <- function(df) {
+  apply(df, 2, function(col) {
+    ranks <- rank(col, ties.method = "min")
+    percentiles <- (ranks - 1) / (length(ranks) - 1) * 100
+    return(percentiles)
+  }) |> as.data.frame()
+}
+
+W0Sputum_RawReads_QuantileNormalization_0.100 <- rank_cols_to_percentile(W0Sputum_RawReads_QuantileNormalization)
+
+# Get the average for my 3 week 0s
+RANK_Average_RawReads_W0Sputum <- W0Sputum_RawReads_QuantileNormalization_0.100 %>% 
+  mutate(RANK_Average = rowMeans(across(where(is.numeric)))) %>%
+  select(RANK_Average)
 
 
 # TESTING BELOW.....
@@ -70,19 +90,19 @@ RANK_Average_tpm_W0Sputum <- test_2 %>%
 ###### QUANTILE NORMALISATION OUTSIDE OF FUNCTION #######
 
 # Give all the genes a rank
-df_rank <- apply(my_tpm_W0Sputum, 2, rank, ties.method="min")
+# df_rank <- apply(my_tpm_W0Sputum, 2, rank, ties.method="min")
 
 # Sort all the genes based on original data (ascending is default)
-df_sorted <- data.frame(apply(my_tpm_W0Sputum, 2, sort))
+# df_sorted <- data.frame(apply(my_tpm_W0Sputum, 2, sort))
 
 # Calculate the average TPM for each row
-df_mean <- apply(df_sorted, 1, mean)
+# df_mean <- apply(df_sorted, 1, mean)
 
 # New Function: takes the original ranks and replaces them with the mean values we just calculated
-index_to_mean <- function(my_index, my_mean) {return (my_mean [my_index])}
+# index_to_mean <- function(my_index, my_mean) {return (my_mean [my_index])}
 
 # Replaces the values in each column using their original rank and substitute in the mean value for that rank.
 # So if a gene was ranked 10th in a sample, it now gets the average of all the 10th-ranked values across samples.
-df_final <- apply(df_rank, 2, index_to_mean, my_mean = df_mean)
+# df_final <- apply(df_rank, 2, index_to_mean, my_mean = df_mean)
 
-rownames(df_final) <- rownames(df)
+# rownames(df_final) <- rownames(df)
