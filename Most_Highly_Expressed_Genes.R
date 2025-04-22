@@ -140,7 +140,11 @@ top15_combined_df <- full_join(top15_combined_df,
 top15_combined_df <- full_join(top15_combined_df,
                          Coppola2021_Lai2021_top15 %>% rename(Gene = Lai2021_Gene),
                          by = "Gene")
-
+top15_AllSputum_RankExpression_W0RawReads <- full_join(top15_combined_df,
+                                                       RANK_W0_RawReads_top15 %>% rownames_to_column("Gene"),
+                                                 by = "Gene") %>%
+  rename(EllaW0_RawReads_RankAverage = RANK_Average) %>%
+  rename_with(~ str_replace(., "_.*", ""))
 
 
 
