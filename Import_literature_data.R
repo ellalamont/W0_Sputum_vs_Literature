@@ -6,6 +6,9 @@
 # Want to import the literature data and process it in some way so I can compare....
 # Maybe something like Coppola et al. (2021)? https://www.frontiersin.org/journals/immunology/articles/10.3389/fimmu.2021.763364/full#h13
 
+# 4/25/25
+# Added code to import the DEG data from the literature (compared to broth)
+
 ################################################
 ################# WALTER 2015 ##################
 # Raw data is median expression at Day 0....
@@ -14,6 +17,9 @@
 
 # Walter2015_medianExpression <- read.csv("LiteratureData/Walter2015_EL.csv")
 
+### DEG Compared to Broth ###
+# This paper doesn't have this 
+
 ################################################
 ################# GARCIA 2016 ##################
 # Data is Ct values, also there seem to be two different Ct values for the sputum, Coppola2021 is using the Ct values from the first tab I think
@@ -21,6 +27,22 @@
 
 # Garcia2016_medianCt <- read.csv("LiteratureData/Garcia2016_EL.csv")
 
+### DEG Compared to Broth ###
+# The ratio column in Garcia2016 is 2^(-sputum-Aerobic) which is the fold change?
+# I'm not sure if I need to convert this to log2fold change or keep as is.....
+# ***<1 is up in sputum, >1 is up in broth****
+Garcia2016_DEG <- read.csv("LiteratureData/DEG_ComparedToBroth/Garcia2016_DEG_EL.csv")
+
+# Separate the up and down regulated genes
+# ** These have been switched because <1 is up in sputum, so want UP to always be UP in sputum
+Garcia2016_DEG_DOWN <- Garcia2016_DEG %>%
+  filter(Significance == "TRUE") %>% # Need to remove these because they included the not significant
+  filter(Ratio > 1) %>% # THIS IS NOT FOLD CHANGE!!!!
+  select(Gene, Ratio)
+Garcia2016_DEG_UP <- Garcia2016_DEG %>%
+  filter(Significance == "TRUE") %>% # Need to remove these because they included the not significant
+  filter(Ratio <= 1) %>% # THIS IS NOT FOLD CHANGE!!!!
+  select(Gene, Ratio)
 
 ################################################
 ################# SHARMA 2017 ##################
@@ -29,6 +51,19 @@
 
 # Sharma2017_medianRelativeScoreRank <- read.csv("LiteratureData/Sharma2017_EL.csv")
 
+### DEG Compared to Broth ###
+Sharma2017_DEG <- read.csv("LiteratureData/DEG_ComparedToBroth/Sharma2017_DEG_EL.csv")
+
+# Separate the up and down regulated genes
+Sharma2017_DEG_UP <- Sharma2017_DEG %>%
+  filter(Fold.Change > 1) %>% #  Setting it to 1 because we will ignore the small fold changes
+  select(Name, Fold.Change)
+Sharma2017_DEG_DOWN <- Sharma2017_DEG %>%
+  filter(Fold.Change < -1) %>% # Setting it to -1 because we will ignore the small fold changes
+  mutate(Fold.Change = abs(Fold.Change)) %>% # So it's all positive to match other data
+  select(Name, Fold.Change)
+
+
 
 ################################################
 ################### LAI 2021 ###################
@@ -36,6 +71,33 @@
 # So I am just using the relative rank score, but I don't want to go back to the raw data until I really know what I am doing and talk to Bob!
 
 Lai2021_medianRelativeScoreRank <- read.csv("LiteratureData/Lai2021_EL.csv")
+
+### DEG Compared to Broth ###
+Lai2021_DEG <- read.csv("LiteratureData/DEG_ComparedToBroth/Lai2021_DEG_EL.csv")
+
+# Separate the up and down regulated genes
+Lai2021_DEG_UP <- Lai2021_DEG %>%
+  filter(log2FoldChange > 1) %>% # Setting it to 1 because we will ignore the small fold changes
+  select(Gene, log2FoldChange)
+Lai2021_DEG_DOWN <- Lai2021_DEG %>%
+  filter(log2FoldChange < -1) %>% # Setting it to -1 because we will ignore the small fold changes
+  mutate(log2FoldChange = abs(log2FoldChange)) %>% # So it's all positive to match other data
+  select(Gene, log2FoldChange)
+
+
+################################################
+############### HONEYBORNE 2016 ################
+
+### DEG Compared to Broth ###
+Honeyborne_DEG <- read.csv("LiteratureData/DEG_ComparedToBroth/HoneyBorne2016_DEG_EL.csv")
+
+# Separate the up and down regulated genes
+Honeyborne_DEG_UP <- Honeyborne_DEG %>% 
+  filter(Regulation == "up") %>%
+  select(Gene, Fold.Change)
+Honeyborne_DEG_DOWN <- Honeyborne_DEG %>% 
+  filter(Regulation == "down") %>%
+  select(Gene, Fold.Change)
 
 
 ################################################

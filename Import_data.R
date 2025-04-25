@@ -234,4 +234,25 @@ rownames(All_RawReads) <- All_RawReads[,1] # add the rownames
 my_RawReads_W0Sputum <- All_RawReads %>% select(all_of(W0_Sputum_SampleNames))
 
 
+###########################################################
+################### IMPORT BOB's DE DATA ##################
+
+# Don't know why these are only working with the full pathname....
+`W0.ComparedTo.Broth` <- read.delim("JOINED_BobAverages/MTb.MetaResults.W0_vs_Broth/W0.MTb.Meta.JOINED.txt")
+
+# Separate the up and down regulated genes
+EllaW0_DEG_UP <- W0.ComparedTo.Broth %>%
+  filter(AVG_PVALUE < 0.05) %>%
+  filter(LOG2FOLD > 1) %>%
+  select(GENE_ID, LOG2FOLD)
+EllaW0_DEG_DOWN <- W0.ComparedTo.Broth %>%
+  filter(AVG_PVALUE < 0.05) %>%
+  filter(LOG2FOLD < -1) %>%
+  select(GENE_ID, LOG2FOLD)
+
+
+
+
+
+
 
