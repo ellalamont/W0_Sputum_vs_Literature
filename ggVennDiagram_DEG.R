@@ -71,6 +71,11 @@ ggsave(Venn_DEG_UP,
        path = "VennDiagrams_Figures",
        width = 9, height = 6, units = "in")
 
+# Make it plotly! 
+ggVennDiagram(genelist_DEG_UP,
+              show_intersect = T)
+
+
 ###########################################################
 ########### VENN DIAGRAM - UP REGULATED GENES #############
 
@@ -92,4 +97,6 @@ ggsave(Venn_DEG_DOWN,
        path = "VennDiagrams_Figures",
        width = 9, height = 6, units = "in")
 
-
+# Make it plotly! 
+ggVennDiagram(genelist_DEG_DOWN,
+              show_intersect = T)

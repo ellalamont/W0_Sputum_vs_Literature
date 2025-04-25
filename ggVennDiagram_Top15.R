@@ -96,10 +96,14 @@ Venn_FromRawReads <- ggVennDiagram(gene_list2,
        fill = "Number of genes") 
 Venn_FromRawReads
 
-ggsave(Venn_FromRawReads,
-       file = "W0vsLitSputum_Top15PercentGenes_wREADS_M_v1.pdf",
-       path = "VennDiagrams_Figures",
-       width = 9, height = 6, units = "in")
+# Make it plotly! 
+ggVennDiagram(gene_list2,
+              show_intersect = T)
+
+# ggsave(Venn_FromRawReads,
+#        file = "W0vsLitSputum_Top15PercentGenes_wREADS_M_v1.pdf",
+#        path = "VennDiagrams_Figures",
+#        width = 9, height = 6, units = "in")
 
 
 ###########################################################
