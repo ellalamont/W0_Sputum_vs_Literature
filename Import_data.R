@@ -241,13 +241,14 @@ my_RawReads_W0Sputum <- All_RawReads %>% select(all_of(W0_Sputum_SampleNames))
 `W0.ComparedTo.Broth` <- read.delim("JOINED_BobAverages/MTb.MetaResults.W0_vs_Broth/W0.MTb.Meta.JOINED.txt")
 
 # Separate the up and down regulated genes
+# Doing log2fold threshold as 2.5 because that's what I'm doing for the literature data
 EllaW0_DEG_UP <- W0.ComparedTo.Broth %>%
   filter(AVG_PVALUE < 0.05) %>%
-  filter(LOG2FOLD > 1) %>%
+  filter(LOG2FOLD > 2.5) %>%
   select(GENE_ID, LOG2FOLD)
 EllaW0_DEG_DOWN <- W0.ComparedTo.Broth %>%
   filter(AVG_PVALUE < 0.05) %>%
-  filter(LOG2FOLD < -1) %>%
+  filter(LOG2FOLD < -2.5) %>%
   select(GENE_ID, LOG2FOLD)
 
 

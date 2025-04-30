@@ -31,14 +31,6 @@ return(df_final)}
 test <- as.data.frame(quantile_normalisation(my_tpm_W0Sputum))
 class(test)
 
-#########################################################
-############# AVERAGE THE NEW RANK SCORES ###############
-
-# Get the average tpm for my 3 week 0s
-RANK_Average_tpm_W0Sputum <- test %>% 
-  mutate(RANK_Average = rowMeans(across(where(is.numeric)))) %>%
-  select(RANK_Average)
-
 
 
 #########################################################

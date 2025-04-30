@@ -30,7 +30,6 @@ pheatmap(AllSputum_RankExpression_filtered20,
          display_numbers = T)
 
 
-
 ###########################################################
 ################ PHEATMAP WITH ALL GENES ##################
 
@@ -46,5 +45,33 @@ pheatmap(AllSputum_RankExpression_2_filtered,
 
 # 4/21/25: The Lai2021 is super different... many low numbers, not many high numbers... what is going on here??
 ## Because there were so many not detected or lowly detected genes in this RNAseq dataset... Mentioned in the Coppola2021 paper but not really explained how they dealt with it....
+
+
+###########################################################
+############### PHEATMAP WITH W0 AND LAI2021 ##############
+
+# Combine the tpm and and metadata for the samples that I want to include (broth and W0 only)
+# W0 samples: "S_250754", "S_355466", "S_503557"
+# Broth samples: "H37Ra_Broth_4", "H37Ra_Broth_5", "H37Ra_Broth_6"
+# Lai2021 W0 sputum: "SRR10125319", "SRR10125320", "SRR10125321", "SRR10125322", "SRR10125323", "SRR10125324"
+# Lai2021 exponential broth: "SRR10125314", "SRR10125315"
+
+Lai2021_SputumNames <- c("SRR10125319", "SRR10125320", "SRR10125321", "SRR10125322", "SRR10125323", "SRR10125324")
+Lai2021_ExpNames <- c("SRR10125314", "SRR10125315")
+W0_Sputum_SampleNames <- c("S_250754", "S_355466", "S_503557")
+Ella_Broth_SampleNames <- c("H37Ra_Broth_4", "H37Ra_Broth_5", "H37Ra_Broth_6")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -34,21 +34,45 @@ my_plot_themes <- theme_grey() +
 ###########################################################
 #################### PROCESS THE DATA #####################
 
+# These are all with p<0.05 and log2fold (or just fold, for some, it's unclear) of at least 2.5 
+
+cat(paste0("Ella_W0\nn=", nrow(EllaW0_DEG_UP)))
+paste0("Ella_W0\nn=", nrow(EllaW0_DEG_UP))
+
 # Getting a list of all the DEG gene names for all the data
-genelist_DEG_UP <- list("Ella_W0\nn=472" = EllaW0_DEG_UP %>% pull(GENE_ID),
-                        "Honeyborne2016\nn=528" = Honeyborne_DEG_UP %>% pull(Gene),
-                        "Garcia2016\nn=302" = Garcia2016_DEG_UP %>% pull(Gene),
-                        "Sharma2017\nn=333" = Sharma2017_DEG_UP %>% pull(Name),
-                        "Lai2021\nn=114" = Lai2021_DEG_UP %>% pull(Gene)
+genelist_DEG_UP <- list("Ella_W0" = EllaW0_DEG_UP %>% pull(GENE_ID),
+                        "Honeyborne2016" = Honeyborne_DEG_UP %>% pull(Gene),
+                        "Garcia2016" = Garcia2016_DEG_UP %>% pull(Gene),
+                        "Sharma2017" = Sharma2017_DEG_UP %>% pull(Name),
+                        "Garton2008" = Garton2008_DEG_UP %>% pull(Gene),
+                        "Lai2021" = Lai2021_DEG_UP %>% pull(Gene)
                         )
+# Set the names to include the number of genes
+names(genelist_DEG_UP) <- c(
+  paste0("Ella_W0\nn=", nrow(EllaW0_DEG_UP)),
+  paste0("Honeyborne2016\nn=", nrow(Honeyborne_DEG_UP)),
+  paste0("Garcia2016\nn=", nrow(Garcia2016_DEG_UP)),
+  paste0("Sharma2017\nn=", nrow(Sharma2017_DEG_UP)),
+  paste0("Garton2008\nn=", nrow(Garton2008_DEG_UP)),
+  paste0("Lai2021\nn=", nrow(Lai2021_DEG_UP))
+)
 
-genelist_DEG_DOWN <- list("Ella_W0\nn=339" = EllaW0_DEG_DOWN %>% pull(GENE_ID),
-                          "Honeyborne2016\nn=555" = Honeyborne_DEG_DOWN %>% pull(Gene),
-                          "Garcia2016\nn=511" = Garcia2016_DEG_DOWN %>% pull(Gene),
-                          "Sharma2017\nn=469" = Sharma2017_DEG_DOWN %>% pull(Name),
-                          "Lai2021\nn=77" = Lai2021_DEG_DOWN %>% pull(Gene)
+genelist_DEG_DOWN <- list("Ella_W0" = EllaW0_DEG_DOWN %>% pull(GENE_ID),
+                          "Honeyborne2016" = Honeyborne_DEG_DOWN %>% pull(Gene),
+                          "Garcia2016" = Garcia2016_DEG_DOWN %>% pull(Gene),
+                          "Sharma2017" = Sharma2017_DEG_DOWN %>% pull(Name),
+                          "Garton2008" = Garton2008_DEG_DOWN %>% pull(Gene),
+                          "Lai2021" = Lai2021_DEG_DOWN %>% pull(Gene)
                           )
-
+# Set the names to include the number of genes
+names(genelist_DEG_DOWN) <- c(
+  paste0("Ella_W0\nn=", nrow(EllaW0_DEG_DOWN)),
+  paste0("Honeyborne2016\nn=", nrow(Honeyborne_DEG_DOWN)),
+  paste0("Garcia2016\nn=", nrow(Garcia2016_DEG_DOWN)),
+  paste0("Sharma2017\nn=", nrow(Sharma2017_DEG_DOWN)),
+  paste0("Garton2008\nn=", nrow(Garton2008_DEG_DOWN)),
+  paste0("Lai2021\nn=", nrow(Lai2021_DEG_DOWN))
+)
 
 ###########################################################
 ########### VENN DIAGRAM - UP REGULATED GENES #############
@@ -59,25 +83,25 @@ Venn_DEG_UP <- ggVennDiagram(genelist_DEG_UP,
                                    set_size = 4,
                                    label_size = 3,
                                    label_alpha = 0) + # Text background
-  scale_fill_distiller(palette = "RdBu", limits = c(0, 400),) +
+  scale_fill_distiller(palette = "RdBu", limits = c(0, 320),) +
   # scale_fill_distiller(palette = "Reds", direction = 1) +
   scale_x_continuous(expand = expansion(mult = .1)) +
   labs(title = "Upregulated genes in literature sputum compared to broth",
-       subtitle = "DEGs compared to broth from literature, P<0.05, Log2fold>1 (Garcia stil as ratio)",
+       subtitle = "DEGs compared to broth from literature, P<0.05, Log2fold>2.5",
        fill = "Number of genes") 
 Venn_DEG_UP
 ggsave(Venn_DEG_UP,
-       file = "W0vsLitSputum_DEG_UP_v1.pdf",
+       file = "W0vsLitSputum_DEG_UP_v2.pdf",
        path = "VennDiagrams_Figures",
        width = 9, height = 6, units = "in")
 
 # Make it plotly! 
-ggVennDiagram(genelist_DEG_UP,
-              show_intersect = T)
+# ggVennDiagram(genelist_DEG_UP,
+#               show_intersect = T)
 
 
 ###########################################################
-########### VENN DIAGRAM - UP REGULATED GENES #############
+########## VENN DIAGRAM - DOWN REGULATED GENES ############
 
 Venn_DEG_DOWN <- ggVennDiagram(genelist_DEG_DOWN,
                              show_intersect = F,
@@ -85,7 +109,7 @@ Venn_DEG_DOWN <- ggVennDiagram(genelist_DEG_DOWN,
                              set_size = 4,
                              label_size = 3,
                              label_alpha = 0) + # Text background
-  scale_fill_distiller(palette = "RdBu", limits = c(0, 340),) +
+  scale_fill_distiller(palette = "RdBu", limits = c(0, 210),) +
   # scale_fill_distiller(palette = "Reds", direction = 1) +
   scale_x_continuous(expand = expansion(mult = .1)) +
   labs(title = "Downregulated genes in literature sputum compared to broth",
@@ -93,10 +117,29 @@ Venn_DEG_DOWN <- ggVennDiagram(genelist_DEG_DOWN,
        fill = "Number of genes") 
 Venn_DEG_DOWN
 ggsave(Venn_DEG_DOWN,
-       file = "W0vsLitSputum_DEG_DOWN_v1.pdf",
+       file = "W0vsLitSputum_DEG_DOWN_v2.pdf",
        path = "VennDiagrams_Figures",
        width = 9, height = 6, units = "in")
 
 # Make it plotly! 
-ggVennDiagram(genelist_DEG_DOWN,
-              show_intersect = T)
+# ggVennDiagram(genelist_DEG_DOWN,
+#               show_intersect = T)
+
+
+###########################################################
+########## INDIVIDUAL VENN DIAGRAM COMPARISONS ############
+
+Venn_DEG_UP <- ggVennDiagram(genelist_DEG_UP[c(4,5)],
+                             show_intersect = F,
+                             label = "both",
+                             set_size = 4,
+                             label_size = 3,
+                             label_alpha = 0) + # Text background
+  scale_fill_distiller(palette = "RdBu", limits = c(0, 400),) +
+  # scale_fill_distiller(palette = "Reds", direction = 1) +
+  scale_x_continuous(expand = expansion(mult = .1)) +
+  labs(title = "Upregulated genes in literature sputum compared to broth",
+       subtitle = "DEGs compared to broth from literature, P<0.05, Log2fold>2.5",
+       fill = "Number of genes") 
+Venn_DEG_UP
+
