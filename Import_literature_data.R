@@ -94,6 +94,8 @@ Lai2021_DEG_DOWN <- Lai2021_DEG %>%
 Lai2021_tpm <- read.csv("LiteratureData/Lai2021_BobsPipeline/Mtb.Expression.Gene.Data.TPM_Lai2021.csv")
 # Convert column to rownames
 rownames(Lai2021_tpm) <- Lai2021_tpm[,1] # add the rownames
+Lai2021_RawReads <- read.csv("LiteratureData/Lai2021_BobsPipeline/Mtb.Expression.Gene.Data.readsM_Lai2021.csv")
+rownames(Lai2021_RawReads) <- Lai2021_RawReads[,1] # add the rownames
 
 Lai2021_SputumNames <- c("SRR10125319", "SRR10125320", "SRR10125321", "SRR10125322", "SRR10125323", "SRR10125324")
 
