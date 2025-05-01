@@ -113,7 +113,7 @@ Venn_DEG_DOWN <- ggVennDiagram(genelist_DEG_DOWN,
   # scale_fill_distiller(palette = "Reds", direction = 1) +
   scale_x_continuous(expand = expansion(mult = .1)) +
   labs(title = "Downregulated genes in literature sputum compared to broth",
-       subtitle = "DEGs compared to broth from literature, P<0.05, Log2fold<-1 (Garcia stil as ratio)",
+       subtitle = "DEGs compared to broth from literature, P<0.05, Log2fold<-2.5",
        fill = "Number of genes") 
 Venn_DEG_DOWN
 ggsave(Venn_DEG_DOWN,
