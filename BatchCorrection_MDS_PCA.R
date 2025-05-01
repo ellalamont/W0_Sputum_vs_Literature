@@ -90,8 +90,8 @@ colnames(design) <- levels(group)
 # Just do the PCA the way I have been doing it
 
 # Convert the batch corrected counts to counts per million (cpm)
-merged_cpm <- cpm(merged_RawReads_rn)
-merged_cpm_log2 <- cpm(merged_RawReads_rn, log = T)
+merged_cpm <- cpm(counts_corrected)
+merged_cpm_log2 <- cpm(counts_corrected, log = T)
 
 # transform the data 
 merged_cpm_t <- as.data.frame(t(merged_cpm))
@@ -103,8 +103,8 @@ merged_cpm_log2_t <- merged_cpm_log2_t %>% select_if(colSums(.) != 0) # Stays at
 
 # Make the actual PCA
 # Need to choose here if using log2 or not
-# my_PCA <- prcomp(merged_cpm_t, scale = TRUE)
-my_PCA <- prcomp(merged_cpm_log2_t, scale = TRUE)
+my_PCA <- prcomp(merged_cpm_t, scale = TRUE)
+# my_PCA <- prcomp(merged_cpm_log2_t, scale = TRUE) #. This is throwing an error, not sure why
 
 # See the % Variance explained
 summary(my_PCA)
@@ -126,14 +126,14 @@ fig_PC1vsPC2 <- my_PCA_df %>%
   scale_shape_manual(values=c(`Sputum` = 21, `TBSputum_nonHIV` = 22, `Broth`= 24, `Rv_Exponential` = 25)) + 
   # geom_text_repel(aes(label = EukrRNADep), size= 2.5, box.padding = 0.4, segment.color = NA, max.overlaps = Inf) + 
   labs(title = "Ella W0 and H37Ra broth, with Lai2021 sputum and exponential Rv broth",
-       subtitle = "Batch corrected raw reads -> log2(CPM)",
+       subtitle = "Batch corrected raw reads -> CPM",
        x = paste0("PC1: ", summary_PCA[1,1], "%"),
        y = paste0("PC2: ", summary_PCA[2,1], "%")) +
   my_plot_themes
 fig_PC1vsPC2
 ggsave(fig_PC1vsPC2,
-       # file = "PCA_EllavsLai2021_BatchCorrect.CPM_v1.pdf",
-       file = "PCA_EllavsLai2021_BatchCorrect.LOG2.CPM_v1.pdf",
+       file = "PCA_EllavsLai2021_BatchCorrect.CPM_v1.pdf",
+       # file = "PCA_EllavsLai2021_BatchCorrect.LOG2.CPM_v1.pdf",
        path = "PCA_Figures",
        width = 8, height = 5, units = "in")
 
@@ -142,7 +142,7 @@ ggsave(fig_PC1vsPC2,
 ####################### MDS MY WAY ########################
 
 # Convert the batch corrected counts to counts per million (cpm)
-merged_cpm <- cpm(merged_RawReads_rn)
+merged_cpm <- cpm(counts_corrected)
 
 # transform the data 
 merged_cpm_t <- as.data.frame(t(merged_cpm))
