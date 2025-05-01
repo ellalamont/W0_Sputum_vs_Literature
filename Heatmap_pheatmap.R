@@ -61,8 +61,29 @@ Lai2021_ExpNames <- c("SRR10125314", "SRR10125315")
 W0_Sputum_SampleNames <- c("S_250754", "S_355466", "S_503557")
 Ella_Broth_SampleNames <- c("H37Ra_Broth_4", "H37Ra_Broth_5", "H37Ra_Broth_6")
 
+# Combine my metadata with Lai2021 metadata
+# I Only need SampleID and Sample_Type
+merged_metadata <- bind_rows(
+  select(my_pipeSummary, all_of(c("SampleID", "Sample_Type"))),
+  select(Lai2021_metadata, all_of(c("SampleID", "Sample_Type")))
+)
+rownames(merged_metadata) <- merged_metadata$SampleID
 
+# Combine my tpm with Lai2021 tpm
+merged_tpm <- full_join(
+  select(All_tpm, all_of(c(W0_Sputum_SampleNames, Ella_Broth_SampleNames, "X"))),
+  select(Lai2021_tpm, all_of(c(Lai2021_SputumNames, Lai2021_ExpNames, "X"))),
+  by = "X"
+)
+merged_tpm_rn <- merged_tpm %>%
+  column_to_rownames(var = "X")
 
+testing <- merged_tpm_rn %>% subset(rownames(merged_tpm_rn) %in% MTb.TB.Phenotypes.TopGeneSets$`human_sputum: top 50 genes`) # Guess this doesn't need to be a matrix
+pheatmap(testing, 
+         annotation_col = merged_metadata["Sample_Type"], 
+         # annotation_row = gene_annot["Product"],
+         # annotation_colors = my_annotation_colors,
+         scale = "row")
 
 
 
