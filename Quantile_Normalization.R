@@ -46,12 +46,7 @@ rank_cols_to_percentile <- function(df) {
   }) |> as.data.frame()
 }
 
-test_2 <- rank_cols_to_percentile(test)
 
-# Get the average for my 3 week 0s
-RANK_Average_tpm_W0Sputum <- test_2 %>% 
-  mutate(RANK_Average = rowMeans(across(where(is.numeric)))) %>%
-  select(RANK_Average)
 
 
 #########################################################

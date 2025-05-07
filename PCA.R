@@ -24,11 +24,11 @@ my_plot_themes <- theme_bw() +
         axis.title.y = element_text(size=14),
         axis.text.y = element_text(size=14), 
         plot.subtitle = element_text(size=9), 
-        plot.margin = margin(10, 10, 10, 20),
-        panel.background = element_rect(fill='transparent'),
-        plot.background = element_rect(fill='transparent', color=NA),
-        legend.background = element_rect(fill='transparent'),
-        legend.box.background = element_blank()
+        plot.margin = margin(10, 10, 10, 20)# ,
+        # panel.background = element_rect(fill='transparent'),
+        # plot.background = element_rect(fill='transparent', color=NA),
+        # legend.background = element_rect(fill='transparent'),
+        # legend.box.background = element_blank()
   )
 
 
