@@ -54,6 +54,8 @@ merged_tpm <- full_join(
   by = "X"
   )
 
+
+
 # add rownames to the tpm 
 merged_tpm <- merged_tpm %>% column_to_rownames(var = "X")
 
@@ -69,9 +71,9 @@ my_PCA <- prcomp(merged_tpm_t, scale = TRUE)
 # See the % Variance explained
 summary(my_PCA)
 summary_PCA <- format(round(as.data.frame(summary(my_PCA)[["importance"]]['Proportion of Variance',]) * 100, digits = 1), nsmall = 1) # format and round used to control the digits after the decimal place
-summary_PCA[1,1] # PC1 explains 32.2% of variance
-summary_PCA[2,1] # PC2 explains 16.0% of variance
-summary_PCA[3,1] # PC3 explains 11.8% of variance
+summary_PCA[1,1] # PC1 explains 29.5% of variance
+summary_PCA[2,1] # PC2 explains 17.6% of variance
+summary_PCA[3,1] # PC3 explains 12.0% of variance
 
 # Add the metadata
 my_PCA_df <- as.data.frame(my_PCA$x[, 1:3]) # Extract the first 3 PCs
@@ -147,9 +149,9 @@ my_PCA <- prcomp(merged_tpm_t, scale = TRUE)
 # See the % Variance explained
 summary(my_PCA)
 summary_PCA <- format(round(as.data.frame(summary(my_PCA)[["importance"]]['Proportion of Variance',]) * 100, digits = 1), nsmall = 1) # format and round used to control the digits after the decimal place
-summary_PCA[1,1] # PC1 explains 25.5% of variance
-summary_PCA[2,1] # PC2 explains 19.7% of variance
-summary_PCA[3,1] # PC3 explains 16.0% of variance
+summary_PCA[1,1] # PC1 explains 26.3% of variance
+summary_PCA[2,1] # PC2 explains 17.9% of variance
+summary_PCA[3,1] # PC3 explains 16.6% of variance
 
 # Add the metadata
 my_PCA_df <- as.data.frame(my_PCA$x[, 1:3]) # Extract the first 3 PCs

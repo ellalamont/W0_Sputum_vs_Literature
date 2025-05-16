@@ -139,14 +139,14 @@ fig_PC1vsPC2 <- my_PCA_df %>%
   my_plot_themes
 fig_PC1vsPC2
 ggsave(fig_PC1vsPC2,
-       file = "PCA_EllavsLai2021_BatchCorrect.CPM_v2.pdf",
+       file = "PCA_EllavsLai2021_BatchCorrect.CPM_v1.pdf",
        path = "PCA_Figures",
        width = 8, height = 5, units = "in")
-ggsave(fig_PC1vsPC2,
-       file = "PCA_EllavsLai2021_BatchCorrect.CPM_v2.png",
-       path = "PCA_Figures",
-       dpi = 300,
-       width = 8, height = 5, units = "in")
+# ggsave(fig_PC1vsPC2,
+#        file = "PCA_EllavsLai2021_BatchCorrect.CPM_v2.png",
+#        path = "PCA_Figures",
+#        dpi = 300,
+#        width = 8, height = 5, units = "in")
 
 
 ###########################################################
@@ -181,12 +181,12 @@ fig_MDS <- my_MDS_df %>%
        y = "Dimension 2") +
   my_plot_themes
 # my_plot_themes_thumbnail
-# fig_MDS
-# ggsave(fig_MDS,
-#        file = "MDS_EllavsLai2021_BatchCorrect.CPM_v1.pdf",
-#        # file = "PCA_EllavsLai2021_BatchCorrect.LOG2.CPM_v1.pdf",
-#        path = "MDS_Figures",
-#        width = 8, height = 5, units = "in")
+fig_MDS
+ggsave(fig_MDS,
+       file = "MDS_EllavsLai2021_BatchCorrect.CPM_v1.pdf",
+       # file = "PCA_EllavsLai2021_BatchCorrect.LOG2.CPM_v1.pdf",
+       path = "MDS_Figures",
+       width = 8, height = 5, units = "in")
 
 
 
